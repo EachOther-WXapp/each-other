@@ -1,0 +1,61 @@
+# 服务端口和地址
+server:
+  port: 9100
+  context-path: /each-other  # 使用外部tomcat时 该配置自动失效 使用的是war包的名字
+#  address: localhost  #只允许本机访问
+
+
+spring:
+  application:
+    name: each-other-server # 服务名称，很重要，服务间调用通过该名称
+  profiles:
+    active: prod
+  datasource: # 数据库连接池配置
+    type: com.alibaba.druid.pool.DruidDataSource  # 指定druid数据连接池
+    url: jdbc:mysql://www.xiciwutong.xin:3306/each_other?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: mytest
+    password: Beto316825?  # 该密码是加密后的
+    driver-class-name: com.mysql.jdbc.Driver  # 非必填  框架会根据url自动推断出
+    druid:
+      connection-properties: config.decrypt=false
+      validationQuery: select 1 # 验证连接有效与否的SQL
+      filter:
+        config:
+          enabled: true
+        encoding:
+          enabled: true
+        stat:
+          db-type: mysql
+          log-slow-sql: true  # 开启慢查询日志
+          slow-sql-millis: 5000
+        wall:
+          enabled: false
+          db-type: mysql
+          config:
+            #delete-allow: false  # 不允许删除数据
+            drop-table-allow: false # 不允许删除表
+      stat-view-servlet:
+        login-username: roet80736  # druid 控制台账号
+        login-password: beto316825  # druid 控制台密码
+      initial-size: 5
+      max-active: 50
+      min-evictable-idle-time-millis: 100000
+      max-evictable-idle-time-millis: 200000
+      aop-patterns: com.wutong.weixin
+
+
+#日记配置
+logging:
+  config: classpath:config/logback.xml # 日志文件路径
+
+
+mybatis:
+  #config-location: classpath:config/mybatis-config.xml  # mybatis 配置文件位置,这里统一配置的所以没有该文件
+  configuration:
+    use-generated-keys: true  # 使用jdbc的getGeneratekeys获取自增主键值
+    use-column-label: true  # 使用列别名替换列名 默认值为true
+    map-underscore-to-camel-case: true # 开启驼峰命名转换Table:create_time到 Entity(createTime)
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl  # 选择mybatis日志实现方式
+#    cache-enabled: true  # 开启mybatis二级缓存
+  type-aliases-package: com.wutong.weixin.entity
+  mapper-locations: classpath:mapper/*.xml

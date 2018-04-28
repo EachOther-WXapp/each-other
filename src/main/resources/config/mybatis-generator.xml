@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+
+    <!-- 数据库驱动-->
+    <!--<classPathEntry location="mysql-connector-java-5.1.39.jar"/>-->
+
+    <context id="DB2Entity" targetRuntime="MyBatis3">
+
+        <commentGenerator type="com.wutong.weixin.utils.mybatis.CustomCommentGenerator">
+            <!-- 是否废止生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="false"/>
+            <!-- 是否废止生成时间戳注释 -->
+            <property name="suppressDate" value="false"/>
+            <!-- 是否生成属性注释 -->
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库URL，用户名、密码 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://www.xiciwutong.xin:3306/each_other?useSSL=false"
+                        userId="mytest"
+                        password="Beto316825?">
+        </jdbcConnection>
+
+
+        <!--
+        默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer
+            true，把JDBC DECIMAL 和 NUMERIC 类型解析为java.math.BigDecimal
+        -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true"/>
+        </javaTypeResolver>
+
+        <!-- 生成实体的包名和位置-->
+        <javaModelGenerator targetPackage="com.wutong.weixin.entity"
+                            targetProject="src\main\java\">
+            <property name="enableSubPackages" value="true"/>
+            <!--设置父类 -->
+            <property name="rootClass" value="com.wutong.weixin.entity.Entity"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- 生成映射文件的包名和位置-->
+        <!--<sqlMapGenerator targetPackage="mapper"-->
+                         <!--targetProject="web-pet\web-pet-dao\src\main\resources\">-->
+            <!--<property name="enableSubPackages" value="true"/>-->
+        <!--</sqlMapGenerator>-->
+
+        <!-- 生成DAO的包名和位置-->
+        <!--<javaClientGenerator type="XMLMAPPER"-->
+                             <!--targetPackage="com.zc.framework.web.pet.dao"-->
+                             <!--targetProject="web-pet\web-pet-dao\src\main\java\">-->
+            <!--<property name="enableSubPackages" value="true"/>-->
+            <!--<property name="rootInterface" value="com.zc.framework.web.commons.base.dao.CrudDao"/>-->
+        <!--</javaClientGenerator>-->
+
+        <!-- 要生成的表 tableName是数据库中的表名或视图名 domainObjectName是实体类名 -->
+
+
+
+        <table tableName="train" domainObjectName="Train"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false"/>
+
+
+
+    </context>
+</generatorConfiguration>

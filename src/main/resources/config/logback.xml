@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <contextName>logback</contextName>
+    <!--定义日志文件的存储地址 勿在 LogBack 的配置中使用相对路径-->
+    <property name="LOG_PATH" value="/data/log/eachOther"/>
+
+    <!-- 日志级别从低到高分为TRACE < DEBUG < INFO < WARN < ERROR < FATAL，如果设置为WARN，则低于WARN的信息都不会输出 -->
+
+    <!--输出到控制台-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- ThresholdFilter为系统定义的拦截器 -->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+            <!--<level>WARN</level>-->
+        <!--</filter>-->
+        <encoder charset="UTF-8">
+            <!--<pattern>%contextName %d [%thread] %-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>%contextName %d [%thread] %-5level [%file:%line] %logger --- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--输出到文件-->
+    <appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- append: 如果是 true，日志被追加到文件结尾，如果是 false，清空现存文件，默认是true -->
+        <!-- <append>true</append> -->
+        <!-- 指定日志保存的文件名和路径，不写会根据fileNamePattern动态变化 -->
+        <!--<file>${LOG_PATH}</file>-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/logback.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 控制保留的归档文件的最大天数，超出天数就删除旧文件,，例如设置为360的话，则360天之后，旧的日志就会被删除 -->
+            <maxHistory>30</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 用来指定日志文件的上限大小，例如设置为10GB的话，那么到了这个值，就会删除旧的日志 -->
+            <totalSizeCap>10GB</totalSizeCap>
+        </rollingPolicy>
+        <!-- ThresholdFilter为系统定义的拦截器 -->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>WARN</level>
+        </filter>-->
+        <encoder charset="UTF-8">
+            <pattern>%contextName %d [%thread] %-5level [%file:%line] %logger - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!-- 普通日志（输出源mongodb） 可配置多个同类型的appender  name不同即可-->
+    <!--<appender name="mongodb_common" class="com.zc.framework.web.commons.utils.appender.MongoDBAppender">-->
+    <!--</appender>-->
+
+    <!--&lt;!&ndash; 访问日志（输出源mongodb） &ndash;&gt;-->
+    <!--<appender name="mongodb_access" class="com.zc.framework.web.commons.utils.appender.MongoDBAppender">-->
+    <!--<accessLog>true</accessLog>-->
+    <!--</appender>-->
+
+
+    <!--<logger name="mongodb_access" level="INFO">-->
+    <!--<appender-ref ref="mongodb_access"/>-->
+    <!--</logger>-->
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+        <!--<appender-ref ref="mongodb_common"/>-->
+    </root>
+
+    <!-- logback为java中的包 -->
+    <!--<logger name="org.tom.demo.controller"/>-->
+    <!--logback.LogbackDemo：类的全路径 -->
+    <!-- addtivity:是否向上级loger传递打印信息。默认是true。 -->
+    <!--<logger name="org.tom.demo.controller" level="WARN" additivity="false">
+        <appender-ref ref="console"/>
+    </logger>-->
+
+    <!-- 测试环境+开发环境. 多个使用逗号隔开. -->
+    <springProfile name="test,dev">
+        <!-- 这里配置日志等级不受root影响，但受appender中设置的filter影响 -->
+        <!-- 对于全局日志等级由root设置， 自己的代码日志等级在这里按照包名设置，使用更灵活 -->
+        <logger name="com.wutong.weixin" level="TRACE"/>
+    </springProfile>
+    <!-- 生产环境. -->
+    <springProfile name="prod">
+        <logger name="com.wutong.weixin" level="TRACE"/>
+    </springProfile>
+
+</configuration>
