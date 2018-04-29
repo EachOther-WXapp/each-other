@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wutong.weixin.dao.VoteDao">
+
+
+    <sql id="config">
+        <bind name="tableName" value="'vote'"/>
+    </sql>
+    <sql id="sql_where">
+        <where>
+            <if test="id != null">id=#{id}</if>
+        </where>
+    </sql>
+    <sql id="sql_update">
+        <set>
+        </set>
+    </sql>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        insert IGNORE into ${tableName}
+        (status)
+        values
+        (#{status})
+    </insert>
+    <update id="update" parameterType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        update ${tableName}
+        <include refid="sql_update"/>
+        where id = #{id}
+    </update>
+    <delete id="delete" parameterType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        DELETE FROM ${tableName}
+        <include refid="sql_where"/>
+    </delete>
+    <delete id="deleteByPk">
+        <include refid="config"/>
+        DELETE FROM ${tableName} WHERE id = #{id}
+    </delete>
+    <select id="query" parameterType="com.wutong.weixin.entity.Vote"
+            resultType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        select * FROM ${tableName}
+        <include refid="sql_where"/>
+        order by id
+    </select>
+    <select id="count" parameterType="com.wutong.weixin.entity.Vote" resultType="long">
+        <include refid="config"/>
+        SELECT count(*) FROM ${tableName}
+        <include refid="sql_where"/>
+    </select>
+    <select id="queryByPk" resultType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        SELECT * FROM ${tableName} WHERE id=#{id}
+    </select>
+
+    <select id="queryVoteCount" resultType="int">
+        <include refid="config"/>
+        SELECT count(*) FROM ${tableName} where status = 0
+    </select>
+
+    <select id="queryPresentVote" resultType="com.wutong.weixin.entity.Vote">
+        <include refid="config"/>
+        SELECT * FROM ${tableName} where status = 0
+    </select>
+
+
+</mapper>

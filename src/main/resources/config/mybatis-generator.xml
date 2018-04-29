@@ -62,7 +62,7 @@
 
 
 
-        <table tableName="user_train" domainObjectName="UserTrain"
+        <table tableName="vote_option" domainObjectName="VoteOption"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

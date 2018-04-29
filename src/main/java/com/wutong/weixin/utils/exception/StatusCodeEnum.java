@@ -37,6 +37,14 @@ public enum StatusCodeEnum {
      */
     TRAIN_ID_INVALID(2100,"无效的培训id"),
 
+    /**
+     * vote 投票
+     */
+    VOTE_ONLY_ONE(2200, "只能发起一个投票,请在已有投票中添加投票选项"),
+    VOTE_ID_INVALID(2201, "非法的投票组id"),
+    VOTE_ID_COUNT_MORE(2202, "投票已有8个选项,不能新增选项"),
+    VOTE_OPTION_ID_INVALID(2203, "非法的选项id"),
+
 
     ;
 
