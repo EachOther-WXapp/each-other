@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         User user = dao.queryOpenId(dto.getOpenid());
         // 新用户登陆
         String token = HashUtil.md5(dto.getOpenid());
-        Date date = CalendarUtil.dayOrientation(new Date(), 7);
+        Date date = CalendarUtil.dayOrientation(new Date(), 60);
         if (user == null) {
             int result = dao.insert(new User(dto.getOpenid(), dto.getSession_key(), dto.getUnionid(), token, date));
             if (result != 1) {

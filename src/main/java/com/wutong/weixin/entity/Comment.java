@@ -58,4 +58,9 @@ public class Comment extends Entity {
      */
     private Integer likeNumber;
 
+    public Comment(Long userId, Long trainId, String content) {
+        this.userId = userId;
+        this.trainId = trainId;
+        this.content = content;
+    }
 }

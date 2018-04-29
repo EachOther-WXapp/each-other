@@ -62,7 +62,7 @@
 
 
 
-        <table tableName="train" domainObjectName="Train"
+        <table tableName="user_train" domainObjectName="UserTrain"
                enableCountByExample="false" enableUpdateByExample="false"
                enableDeleteByExample="false" enableSelectByExample="false"
                selectByExampleQueryId="false"/>

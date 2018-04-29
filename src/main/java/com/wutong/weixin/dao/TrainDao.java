@@ -2,6 +2,7 @@ package com.wutong.weixin.dao;
 
 import com.wutong.weixin.dao.base.CrudDao;
 import com.wutong.weixin.dto.TodayTrainInfoDto;
+import com.wutong.weixin.dto.TrainDetailDto;
 import com.wutong.weixin.entity.Train;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -21,4 +22,16 @@ public interface TrainDao extends CrudDao<Train, Long> {
      * @return 返回当天的培训内容
      */
     List<TodayTrainInfoDto> todayList(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    /**
+     *
+     * @return 给培训点赞
+     */
+    int updateLikeNumber(Long trainId);
+
+    /**
+     *
+     * @return 查询培训详情
+     */
+    TrainDetailDto detail(Long trainId);
 }

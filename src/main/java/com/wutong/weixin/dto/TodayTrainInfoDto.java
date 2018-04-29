@@ -37,6 +37,8 @@ public class TodayTrainInfoDto {
     private String trainStartTimeStr;
     @ApiModelProperty(required = true , value = "结束时间字符串",position = 18)
     private String trainEndTimeStr;
+    @ApiModelProperty(required = true , value = "点赞数量",position = 20)
+    private Integer likeNumber;
 
 
 

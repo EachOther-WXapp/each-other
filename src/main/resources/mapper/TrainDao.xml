@@ -19,9 +19,9 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wutong.weixin.entity.Train">
         <include refid="config"/>
         insert IGNORE into ${tableName}
-        ()
+        (user_id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url)
         values
-        ()
+        (#{userId}, #{trainStartTime}, #{trainEndTime}, #{theme}, #{lecturer}, #{site}, #{detail}, #{conferenceId}, #{githubUrl})
     </insert>
     <update id="update" parameterType="com.wutong.weixin.entity.Train">
         <include refid="config"/>
@@ -57,12 +57,26 @@
 
     <select id="todayList" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
         <include refid="config"/>
-        SELECT id, train_start_time, train_end_time, theme, lecturer, site
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number
         FROM ${tableName} WHERE
         <![CDATA[
         train_start_time >= #{startTime} and train_start_time < #{endTime}
         ]]>
     </select>
+
+    <update id="updateLikeNumber">
+        <include refid="config"/>
+        update ${tableName} set like_number = like_number +1
+        where id = #{id}
+    </update>
+
+    <select id="detail" resultType="com.wutong.weixin.dto.TrainDetailDto" parameterType="long">
+        <include refid="config"/>
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url, like_number
+        FROM ${tableName}
+        WHERE id = #{id}
+    </select>
+
 
 
 </mapper>

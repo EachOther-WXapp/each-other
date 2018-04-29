@@ -77,5 +77,21 @@ public class Train extends Entity {
      * 培训详情
      */
     private String detail;
+    /**
+     * 点赞数
+     */
+    private Integer likeNumber;
 
+
+    public Train(Long userId, Date trainStartTime, Date trainEndTime, String theme, String lecturer, String site, String conferenceId, String githubUrl, String detail) {
+        this.userId = userId;
+        this.trainStartTime = trainStartTime;
+        this.trainEndTime = trainEndTime;
+        this.theme = theme;
+        this.lecturer = lecturer;
+        this.site = site;
+        this.conferenceId = conferenceId;
+        this.githubUrl = githubUrl;
+        this.detail = detail;
+    }
 }

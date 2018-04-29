@@ -27,6 +27,16 @@ public enum StatusCodeEnum {
 
     PARAMETER_MISSING_OR_INCORRECT(1005, "参数缺失或不正确"),
 
+    /**
+     * 评论
+     */
+    COMMENT_ID_INVALID(2000, "无效的评论id"),
+
+    /**
+     * train 培训
+     */
+    TRAIN_ID_INVALID(2100,"无效的培训id"),
+
 
     ;
 

@@ -42,8 +42,33 @@ CREATE TABLE IF NOT EXISTS `train`(
   `detail`              text COMMENT '培训详情',
   `conference_id`       VARCHAR(32)  COMMENT 'TeamView的房间号',
   `github_url`          VARCHAR(64)  COMMENT '上传github的资料地址',
+  `like_number`         int DEFAULT 0 COMMENT '点赞数',
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训信息表';
+
+CREATE TABLE IF NOT EXISTS `user_train`(
+  `id`                  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `create_time`         datetime DEFAULT CURRENT_TIMESTAMP() COMMENT '创建时间',
+  `modified_time`       datetime DEFAULT null ON UPDATE CURRENT_TIMESTAMP() COMMENT '更新时间',
+  `user_id`             BIGINT NOT NULL COMMENT '用户id',
+  `train_id`            BIGINT NOT NULL COMMENT '培训id',
+  PRIMARY KEY (`id`),
+  unique key (`user_id`, `train_id`)
+)ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '用户加入的培训表';
+
+
+
+CREATE TABLE IF NOT EXISTS `comment`(
+  `id`                  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `create_time`         datetime DEFAULT CURRENT_TIMESTAMP() COMMENT '创建时间',
+  `modified_time`       datetime DEFAULT null ON UPDATE CURRENT_TIMESTAMP() COMMENT '更新时间',
+  `user_id`             BIGINT NOT NULL COMMENT '评论者id',
+  `train_id`            BIGINT COMMENT '培训信息id',
+  `comment_id`          BIGINT COMMENT '评论id',
+  `content`             VARCHAR(32) not null COMMENT '评论内容',
+  `like_number`         int DEFAULT 0 COMMENT '点赞数',
+  PRIMARY KEY (`id`)
+)ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训评论表';
 
 
 
