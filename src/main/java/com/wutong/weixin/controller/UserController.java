@@ -46,20 +46,20 @@ public class UserController {
     }
 
 
-    @ApiOperation( nickname = "updateUserInfo", value = "更新用户信息", notes = "更新用户信息")
+    @ApiOperation( nickname = "update_user_info", value = "更新用户信息", notes = "更新用户信息")
     @ApiParam(required = true, name = "model", value = "微信用户信息")
     @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
-    @PostMapping(value = "updateUserInfo")
+    @PostMapping(value = "update_user_info")
     public ResponseMessage updateUserInfo(@Valid @RequestBody UserInfoModel model, HttpServletRequest request) {
-        logger.debug("updateUserInfo 接口参数:{}", model);
+        logger.debug("update_user_info 接口参数:{}", model);
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         service.updateUserInfo(model, authHeader);
         return ResponseUtil.ok();
     }
 
-    @ApiOperation( nickname = "userInfo", value = "获取用户信息", notes = "获取用户信息")
+    @ApiOperation( nickname = "user_info", value = "获取用户信息", notes = "获取用户信息")
     @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
-    @PostMapping(value = "userInfo")
+    @PostMapping(value = "user_info")
     public ResponseMessage<UserInfoDto> userInfo(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         return ResponseUtil.ok(service.userInfo(authHeader));
