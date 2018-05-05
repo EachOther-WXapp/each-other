@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS `train`(
   `conference_id`       VARCHAR(32)  COMMENT 'TeamView的房间号',
   `github_url`          VARCHAR(64)  COMMENT '上传github的资料地址',
   `like_number`         int DEFAULT 0 COMMENT '点赞数',
+  `image_id`            BIGINT COMMENT '培训展示的图片',
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训信息表';
 
@@ -92,6 +93,22 @@ CREATE TABLE IF NOT EXISTS `vote_option`(
 )ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训投票选项表(一组投票最多5个)';
 
 
+CREATE TABLE IF NOT EXISTS `file`
+(
+  `id`                  BIGINT NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `create_time`         datetime DEFAULT CURRENT_TIMESTAMP() COMMENT '创建时间',
+  `modified_time`       datetime DEFAULT null ON UPDATE CURRENT_TIMESTAMP() COMMENT '更新时间',
+  `path`                VARCHAR(50) NOT NULL COMMENT '文件路径',
+  `size`                BIGINT DEFAULT 0 COMMENT '文件大小',
+  `md5`                 VARCHAR(32) DEFAULT '' COMMENT '文件md5',
+  `sha1`                VARCHAR(40) DEFAULT '' COMMENT '文件sha1',
+  `status`              TINYINT DEFAULT 1 COMMENT '文件状态',
+  `type`                TINYINT  COMMENT '文件类型',
+  PRIMARY KEY (`id`),
+  KEY `idx_md5` (`md5`),
+  KEY `idx_sha1`(`sha1`),
+  UNIQUE KEY `uk_md5_sha1`(`md5`, `sha1`)
+)ENGINE = MyISAM DEFAULT CHARSET = utf8mb4 COMMENT '文件';
 
 
 

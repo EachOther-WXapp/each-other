@@ -19,9 +19,9 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wutong.weixin.entity.Train">
         <include refid="config"/>
         insert IGNORE into ${tableName}
-        (user_id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url)
+        (user_id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url, image_id)
         values
-        (#{userId}, #{trainStartTime}, #{trainEndTime}, #{theme}, #{lecturer}, #{site}, #{detail}, #{conferenceId}, #{githubUrl})
+        (#{userId}, #{trainStartTime}, #{trainEndTime}, #{theme}, #{lecturer}, #{site}, #{detail}, #{conferenceId}, #{githubUrl}, #{imageId})
     </insert>
     <update id="update" parameterType="com.wutong.weixin.entity.Train">
         <include refid="config"/>
@@ -57,7 +57,7 @@
 
     <select id="todayList" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
         <include refid="config"/>
-        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number, image_id
         FROM ${tableName} WHERE
         <![CDATA[
         train_start_time >= #{startTime} and train_start_time < #{endTime}
@@ -72,11 +72,34 @@
 
     <select id="detail" resultType="com.wutong.weixin.dto.TrainDetailDto" parameterType="long">
         <include refid="config"/>
-        SELECT id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url, like_number
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, detail, conference_id, github_url, like_number, image_id
         FROM ${tableName}
         WHERE id = #{id}
     </select>
 
+    <select id="monthList" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
+        <include refid="config"/>
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number, image_id
+        FROM ${tableName} WHERE
+        <![CDATA[
+        train_start_time >= #{startTime} and train_start_time < #{endTime}
+        ]]>
+    </select>
 
+    <select id="joinedTrain" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
+        <include refid="config"/>
+        SELECT a.id, a.train_start_time, a.train_end_time, a.theme, a.lecturer, a.site, a.like_number, image_id
+        FROM train a inner join user_train b on a.id = b.train_id
+        where b.user_id = #{userId}
+    </select>
+
+    <select id="historyTrain" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
+        <include refid="config"/>
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number, image_id
+        FROM ${tableName} WHERE
+        <![CDATA[
+        train_start_time <= #{startTime}
+        ]]>
+    </select>
 
 </mapper>

@@ -1,6 +1,6 @@
 package com.wutong.weixin.controller;
 
-import com.wutong.weixin.dto.TodayTrainInfoDto;
+import com.wutong.weixin.dto.TrainCommentDto;
 import com.wutong.weixin.model.AddTrainCommentModel;
 import com.wutong.weixin.service.CommentService;
 import com.wutong.weixin.utils.response.ResponseMessage;
@@ -53,6 +53,7 @@ public class CommentController {
         return ResponseUtil.ok();
     }
 
+
     @ApiOperation( nickname = "dislike", value = "给评论踩一下", notes = "给评论踩一下")
     @ApiParam(required = true, value = "评论的id")
     @GetMapping(value = "dislike")
@@ -60,6 +61,14 @@ public class CommentController {
         logger.info("dislike 接口参数:{}", commentId);
         service.dislike(commentId);
         return ResponseUtil.ok();
+    }
+
+    @ApiOperation( nickname = "list", value = "查询培训的所有评论", notes = "查询培训的所有评论")
+    @GetMapping(value = "list")
+    public ResponseMessage<List<TrainCommentDto>> commentList(@ApiParam(required = true, value = "培训的id")
+                                       @RequestParam(value = "trainId") Long trainId) {
+        logger.info("commentList 接口参数:{}", trainId);
+        return ResponseUtil.ok(service.commentList(trainId));
     }
 
 

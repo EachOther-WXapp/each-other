@@ -59,3 +59,12 @@ mybatis:
 #    cache-enabled: true  # 开启mybatis二级缓存
   type-aliases-package: com.wutong.weixin.entity
   mapper-locations: classpath:mapper/*.xml
+
+
+# 文件上传配置
+file:
+  root: /data/upload   # 文件上传根目录，这里根据实际部署系统配置
+  fileSuffix: jpeg,jpg,gif,png,ico,bmp,doc,docx,xls,xlsx,ppt,pptx,pdf,zip,rar,txt,xml  # 允许的文件后缀
+  fileDir: /files # 文件目录
+  imageSuffix: jpeg,jpg,gif,png,ico,bmp  # 允许的图片后缀
+  imageDir: /images #图片目录

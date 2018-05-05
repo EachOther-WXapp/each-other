@@ -45,6 +45,13 @@ public enum StatusCodeEnum {
     VOTE_ID_COUNT_MORE(2202, "投票已有8个选项,不能新增选项"),
     VOTE_OPTION_ID_INVALID(2203, "非法的选项id"),
 
+    /**
+     * 文件服务
+     */
+    FILE_SUFFIX_NOT_SUPPORT(2300, "文件格式不支持"),
+    FILE_UPLOAD_FAILED(2301, "文件上传失败"),
+    FILE_NOT_EXIST(2302, "文件不存在"),
+    IMAGE_NOT_EXIST(2303, "图片不存在"),
 
     ;
 

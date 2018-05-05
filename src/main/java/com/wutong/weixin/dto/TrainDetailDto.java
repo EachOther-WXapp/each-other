@@ -44,6 +44,7 @@ public class TrainDetailDto {
     private String trainEndTimeStr;
     @ApiModelProperty(required = true , value = "点赞数量",position = 20)
     private Integer likeNumber;
-
+    @ApiModelProperty(required = true , value = "图片的id",position = 22)
+    private Long imageId;
 
 }

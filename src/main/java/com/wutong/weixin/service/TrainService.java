@@ -39,4 +39,22 @@ public interface TrainService {
      * @return 培训详情
      */
     TrainDetailDto detail(Long trainId, String authHeader);
+
+    /**
+     *
+     * @return 最近一个月以后的培训
+     */
+    List<TodayTrainInfoDto> monthList(String authHeader);
+
+    /**
+     *
+     * @return 参加过的培训
+     */
+    List<TodayTrainInfoDto> joinedTrain(String authHeader);
+
+    /**
+     *
+     * @return 公司历史的培训
+     */
+    List<TodayTrainInfoDto> historyTrain(String authHeader);
 }

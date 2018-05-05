@@ -8,9 +8,12 @@ import com.wutong.weixin.entity.Train;
 import com.wutong.weixin.entity.User;
 import com.wutong.weixin.entity.UserTrain;
 import com.wutong.weixin.model.AddTrainModel;
+import com.wutong.weixin.service.FileService;
 import com.wutong.weixin.service.TrainService;
 import com.wutong.weixin.service.UserService;
 import com.wutong.weixin.utils.date.CalendarUtil;
+import com.wutong.weixin.utils.enums.FileSaveType;
+import com.wutong.weixin.utils.enums.FileType;
 import com.wutong.weixin.utils.exception.BusinessException;
 import com.wutong.weixin.utils.exception.StatusCodeEnum;
 import org.slf4j.Logger;
@@ -37,6 +40,8 @@ public class TrainServiceImpl implements TrainService {
     private TrainDao trainDao;
     @Autowired
     private UserTrainDao userTrainDao;
+    @Autowired
+    private FileService fileService;
 
     /**
      *
@@ -64,8 +69,9 @@ public class TrainServiceImpl implements TrainService {
     @Override
     public void add(AddTrainModel model, String authHeader) {
         User user = userService.verifyToken(authHeader);
+        Long id = fileService.fileUpload(FileType.IMAGE, model.getImageBase64(), "jpg", FileSaveType.TRAIN.getCode());
         int result = trainDao.insert(new Train(user.getId(), new Date(model.getStartTime()), new Date(model.getEndTime()), model.getTheme(),
-                model.getLecturer(), model.getSite(), model.getConferenceId(), model.getGithubUrl(), model.getDetail()));
+                model.getLecturer(), model.getSite(), model.getConferenceId(), model.getGithubUrl(), model.getDetail(), id));
         if (result != 1) {
             logger.error("新增培训出错:{}", model);
             throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
@@ -118,5 +124,51 @@ public class TrainServiceImpl implements TrainService {
         dto.setTrainStartTimeStr(sdf.format(dto.getTrainStartTime()));
         dto.setTrainEndTimeStr(sdf.format(dto.getTrainEndTime()));
         return dto;
+    }
+
+    @Override
+    public List<TodayTrainInfoDto> monthList(String authHeader) {
+        userService.verifyToken(authHeader);
+        Date now = new Date();
+        Date startTime = CalendarUtil.getCoarseDate(now);
+        Date endTime = CalendarUtil.monthOrientation(startTime, 1);
+        List<TodayTrainInfoDto> list = trainDao.monthList(startTime, endTime);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM-dd HH:mm");
+        for (TodayTrainInfoDto dto : list) {
+            dto.setTrainStartTimeStr(sdf.format(dto.getTrainStartTime()));
+            dto.setTrainEndTimeStr(sdf.format(dto.getTrainEndTime()));
+        }
+        return list;
+    }
+    /**
+     *
+     * @return 参加过的培训
+     */
+    @Override
+    public List<TodayTrainInfoDto> joinedTrain(String authHeader) {
+        User user = userService.verifyToken(authHeader);
+        List<TodayTrainInfoDto> list = trainDao.joinedTrain(user.getId());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        for (TodayTrainInfoDto dto : list) {
+            dto.setTrainStartTimeStr(sdf.format(dto.getTrainStartTime()));
+            dto.setTrainEndTimeStr(sdf.format(dto.getTrainEndTime()));
+        }
+        return list;
+    }
+    /**
+     *
+     * @return 公司历史的培训
+     */
+    @Override
+    public List<TodayTrainInfoDto> historyTrain(String authHeader) {
+        userService.verifyToken(authHeader);
+        Date time = CalendarUtil.getCoarseDate(new Date());
+        List<TodayTrainInfoDto> list = trainDao.historyTrain(time);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        for (TodayTrainInfoDto dto : list) {
+            dto.setTrainStartTimeStr(sdf.format(dto.getTrainStartTime()));
+            dto.setTrainEndTimeStr(sdf.format(dto.getTrainEndTime()));
+        }
+        return list;
     }
 }

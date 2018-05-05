@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wutong.weixin.dao.FileDao">
+
+
+    <sql id="config">
+        <bind name="tableName" value="'file'"/>
+    </sql>
+
+    <sql id="sql_where">
+        <where>
+            <if test="id != null">id=#{id}</if>
+            <if test="path != null">AND path=#{path}</if>
+            <if test="md5 != null">AND md5=#{md5}</if>
+            <if test="sha1 != null">AND sha1=#{sha1}</if>
+            <if test="status != null">AND status=#{status}</if>
+        </where>
+    </sql>
+
+    <sql id="sql_update">
+        <set>
+            <if test="id != null">id=#{id},</if>
+            <if test="path != null">path=#{path},</if>
+            <if test="md5 != null">md5=#{md5},</if>
+            <if test="sha1 != null">sha1=#{sha1},</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+    </sql>
+
+
+    <insert id="insert" flushCache="false">
+        <include refid="config"/>
+        INSERT IGNORE INTO ${tableName}(id, path, size, md5, sha1, type)
+        VALUES (#{id}, #{path}, #{size}, #{md5}, #{sha1}, #{type})
+    </insert>
+    <update id="update">
+        <include refid="config"/>
+        UPDATE ${tableName}
+        <include refid="sql_update"/>
+        where id = #{id}
+    </update>
+    <delete id="delete">
+        <include refid="config"/>
+        DELETE FROM ${tableName}
+        <include refid="sql_where"/>
+    </delete>
+    <delete id="deleteByPk">
+        <include refid="config"/>
+        DELETE FROM ${tableName} WHERE id=#{id}
+    </delete>
+    <select id="query" resultType="com.wutong.weixin.entity.File">
+        <include refid="config"/>
+        SELECT * FROM ${tableName}
+        <include refid="sql_where"/>
+    </select>
+    <select id="count" resultType="java.lang.Long">
+        <include refid="config"/>
+        SELECT count(*) FROM ${tableName}
+        <include refid="sql_where"/>
+    </select>
+    <select id="queryByPk" resultType="com.wutong.weixin.entity.File">
+        <include refid="config"/>
+        SELECT * FROM ${tableName} WHERE id=#{id}
+    </select>
+
+    <select id="queryFilePathForPk" resultType="string">
+        <include refid="config"/>
+        SELECT path FROM ${tableName} where id = #{id}
+    </select>
+    <select id="queryByMd5AndSha1" resultType="com.wutong.weixin.entity.File">
+        <include refid="config"/>
+        SELECT * FROM ${tableName} where md5 = #{md5} AND sha1 = #{sha1}
+    </select>
+</mapper>

@@ -60,6 +60,17 @@
         update ${tableName} set like_number = like_number + 1
         where id = #{id}
     </update>
-   
+
+    <update id="updateDisLikeNumber">
+        <include refid="config"/>
+        update ${tableName} set dislike_number = dislike_number + 1
+        where id = #{id}
+    </update>
+
+    <select id="commentList" resultType="com.wutong.weixin.dto.TrainCommentDto" parameterType="long">
+        <include refid="config"/>
+        SELECT id, user_id, content, like_number, dislike_number
+        FROM ${tableName} where train_id = #{trainId}
+    </select>
 
 </mapper>

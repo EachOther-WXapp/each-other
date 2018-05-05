@@ -1,7 +1,6 @@
 package com.wutong.weixin.controller;
 
 
-import com.wutong.weixin.dto.LoginResultDto;
 import com.wutong.weixin.dto.UserInfoDto;
 import com.wutong.weixin.model.LoginModel;
 import com.wutong.weixin.model.UserInfoModel;

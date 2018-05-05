@@ -87,6 +87,32 @@ public class TrainController {
         return ResponseUtil.ok(service.detail(trainId, authHeader));
     }
 
+    @ApiOperation( nickname = "month_list", value = "最近一个月以后的培训", notes = "最近一个月以后的培训")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @PostMapping(value = "month_list")
+    public ResponseMessage<List<TodayTrainInfoDto>> monthList(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("token:{}", authHeader);
+        return ResponseUtil.ok(service.monthList(authHeader));
+    }
+
+    @ApiOperation( nickname = "joined_train", value = "用户参加过的培训", notes = "用户参加过的培训")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @PostMapping(value = "joined_train")
+    public ResponseMessage<List<TodayTrainInfoDto>> joinedTrain(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("token:{}", authHeader);
+        return ResponseUtil.ok(service.joinedTrain(authHeader));
+    }
+
+    @ApiOperation( nickname = "history_train", value = "公司历史的培训", notes = "公司历史的培训")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @PostMapping(value = "history_train")
+    public ResponseMessage<List<TodayTrainInfoDto>> historyTrain(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("token:{}", authHeader);
+        return ResponseUtil.ok(service.historyTrain(authHeader));
+    }
 
 
 

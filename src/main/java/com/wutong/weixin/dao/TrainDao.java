@@ -34,4 +34,22 @@ public interface TrainDao extends CrudDao<Train, Long> {
      * @return 查询培训详情
      */
     TrainDetailDto detail(Long trainId);
+
+    /**
+     *
+     * @return 最近一个月以后的培训列表
+     */
+    List<TodayTrainInfoDto> monthList(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+
+    /**
+     *
+     * @return 用户参加过的培训
+     */
+    List<TodayTrainInfoDto> joinedTrain(Long userId);
+
+    /**
+     *
+     * @return 公司历史的培训
+     */
+    List<TodayTrainInfoDto> historyTrain(Date time);
 }

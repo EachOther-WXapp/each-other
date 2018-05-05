@@ -50,6 +50,10 @@ public class AddTrainModel {
     @ApiModelProperty(value = "培训资料github地址",position = 17)
     private String githubUrl;
 
+    @ApiModelProperty(value = "图片base64字符串,字符串不包含data:image/png;base64,",position = 19)
+    @NotNull(message = "{imageBase64.notnull}")
+    private String imageBase64;
+
 
 
 
