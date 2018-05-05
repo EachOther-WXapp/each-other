@@ -15,4 +15,9 @@ public interface CommentService {
      * 给评论点赞
      */
     void like(Long commentId);
+
+    /**
+     * 给评论踩一下
+     */
+    void dislike(Long commentId);
 }

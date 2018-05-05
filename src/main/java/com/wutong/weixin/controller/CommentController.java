@@ -53,6 +53,15 @@ public class CommentController {
         return ResponseUtil.ok();
     }
 
+    @ApiOperation( nickname = "dislike", value = "给评论踩一下", notes = "给评论踩一下")
+    @ApiParam(required = true, value = "评论的id")
+    @GetMapping(value = "dislike")
+    public ResponseMessage dislike(@RequestParam(value = "commentId") Long commentId) {
+        logger.info("dislike 接口参数:{}", commentId);
+        service.dislike(commentId);
+        return ResponseUtil.ok();
+    }
+
 
 
 

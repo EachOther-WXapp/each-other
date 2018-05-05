@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS `comment`(
   `comment_id`          BIGINT COMMENT '评论id',
   `content`             VARCHAR(32) not null COMMENT '评论内容',
   `like_number`         int DEFAULT 0 COMMENT '点赞数',
+  `dislike_number`      int DEFAULT 0 COMMENT '不赞成数量',
   PRIMARY KEY (`id`)
 )ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训评论表';
 

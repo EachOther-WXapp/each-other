@@ -56,4 +56,11 @@ public class CommentServiceImpl implements CommentService {
             throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
         }
     }
+    /**
+     * 给评论踩一下
+     */
+    @Override
+    public void dislike(Long commentId) {
+
+    }
 }
