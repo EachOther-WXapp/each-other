@@ -55,5 +55,9 @@
         SELECT * FROM ${tableName} WHERE id=#{id}
     </select>
 
+    <select id="userJoinFlag" resultType="com.wutong.weixin.entity.UserTrain">
+        <include refid="config"/>
+        SELECT * FROM ${tableName} where user_id = #{userId} and train_id = #{trainId}
+    </select>
 
 </mapper>

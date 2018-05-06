@@ -19,9 +19,9 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="com.wutong.weixin.entity.VoteOption">
         <include refid="config"/>
         insert IGNORE into ${tableName}
-        (user_id, vote_id, content)
+        (user_id, content, status)
         values
-        (#{userId}, #{voteId}, #{content})
+        (#{userId}, #{content}, 0)
     </insert>
     <update id="update" parameterType="com.wutong.weixin.entity.VoteOption">
         <include refid="config"/>
@@ -55,9 +55,9 @@
         SELECT * FROM ${tableName} WHERE id=#{id}
     </select>
 
-    <select id="queryVoteCount" resultType="int" parameterType="long">
+    <select id="queryVoteCount" resultType="int" >
         <include refid="config"/>
-        SELECT count(*) FROM ${tableName} where vote_id = #{voteId}
+        SELECT count(*) FROM ${tableName} where status = 0
     </select>
 
     <update id="addApproveNumber" parameterType="long">
@@ -75,7 +75,27 @@
     <select id="queryVoteOption" parameterType="long" resultType="com.wutong.weixin.dto.VoteOptionDto">
         <include refid="config"/>
         SELECT id, content, approve_amount, disapprove_amount
-        FROM ${tableName} where vote_id = #{voteId}
+        FROM ${tableName} where status = 0
     </select>
 
+    <select id="queryTotalApproveAmount" parameterType="long" resultType="int">
+        <include refid="config"/>
+        SELECT sum(approve_amount) FROM ${tableName} where status = 0
+    </select>
+
+    <select id="queryTotalDisapproveAmount" parameterType="long" resultType="int">
+        <include refid="config"/>
+        SELECT sum(disapprove_amount) FROM ${tableName} where status = 0
+    </select>
+
+    <delete id="deleteOption">
+        <include refid="config"/>
+        delete FROM ${tableName} where user_id = #{userId} and id = #{id}
+    </delete>
+
+    <select id="publishedVote" parameterType="long" resultType="com.wutong.weixin.dto.VoteOptionDto">
+        <include refid="config"/>
+        SELECT id, content, approve_amount, disapprove_amount
+        FROM ${tableName} where user_id = #{userId}
+    </select>
 </mapper>

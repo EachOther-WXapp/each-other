@@ -102,4 +102,14 @@
         ]]>
     </select>
 
+    <delete id="deleteTrain">
+        <include refid="config"/>
+        DELETE FROM ${tableName} where id = #{id} and user_id = #{userId}
+    </delete>
+
+    <select id="publishedTrain" resultType="com.wutong.weixin.dto.TodayTrainInfoDto">
+        <include refid="config"/>
+        SELECT id, train_start_time, train_end_time, theme, lecturer, site, like_number, image_id
+        FROM ${tableName} WHERE user_id = #{userId}
+    </select>
 </mapper>

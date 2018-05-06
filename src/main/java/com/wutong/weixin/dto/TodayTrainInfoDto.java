@@ -21,7 +21,7 @@ import java.util.Date;
 @ApiModel(description = "当天的培训信息")
 public class TodayTrainInfoDto {
 
-    @ApiModelProperty(required = true , value = "id",position = 9)
+    @ApiModelProperty(required = true , value = "培训id",position = 9)
     private Long id;
     @ApiModelProperty(required = true , value = "开始时间",position = 10)
     private Date trainStartTime;
@@ -41,6 +41,10 @@ public class TodayTrainInfoDto {
     private Integer likeNumber;
     @ApiModelProperty(required = true , value = "图片的id",position = 22)
     private Long imageId;
+    @ApiModelProperty(required = true , value = "是否可以加入培训,true 可以加入培训 false:不可以加入培训",position = 23)
+    private Boolean joinFlag;
+    @ApiModelProperty(required = true , value = "图片的url地址",position = 25)
+    private String imageUrl;
 
 
 

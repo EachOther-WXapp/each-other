@@ -61,7 +61,9 @@ public class UserController {
     @PostMapping(value = "user_info")
     public ResponseMessage<UserInfoDto> userInfo(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        return ResponseUtil.ok(service.userInfo(authHeader));
+        UserInfoDto result = service.userInfo(authHeader);
+        logger.debug("user_info 接口返回:{}", result);
+        return ResponseUtil.ok(result);
     }
 
 

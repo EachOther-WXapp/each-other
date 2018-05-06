@@ -42,7 +42,7 @@ public enum StatusCodeEnum {
      */
     VOTE_ONLY_ONE(2200, "只能发起一个投票,请在已有投票中添加投票选项"),
     VOTE_ID_INVALID(2201, "非法的投票组id"),
-    VOTE_ID_COUNT_MORE(2202, "投票已有8个选项,不能新增选项"),
+    VOTE_ID_COUNT_MORE(2202, "投票已有8个,不能新增"),
     VOTE_OPTION_ID_INVALID(2203, "非法的选项id"),
 
     /**
@@ -52,6 +52,7 @@ public enum StatusCodeEnum {
     FILE_UPLOAD_FAILED(2301, "文件上传失败"),
     FILE_NOT_EXIST(2302, "文件不存在"),
     IMAGE_NOT_EXIST(2303, "图片不存在"),
+    IMAGE_IS_EMPTY(2304,"上传图片为空"),
 
     ;
 

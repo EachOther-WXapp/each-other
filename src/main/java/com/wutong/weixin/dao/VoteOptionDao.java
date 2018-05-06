@@ -19,7 +19,7 @@ public interface VoteOptionDao extends CrudDao<VoteOption, Long> {
      *
      * @return 查看一个投票已有的选项
      */
-    int queryVoteCount(@Param("voteId") Long voteId);
+    int queryVoteCount();
 
     /**
      *
@@ -37,5 +37,28 @@ public interface VoteOptionDao extends CrudDao<VoteOption, Long> {
      *
      * @return 投票的选项
      */
-    List<VoteOptionDto> queryVoteOption(@Param("voteId") Long voteId);
+    List<VoteOptionDto> queryVoteOption();
+
+    /**
+     *
+     * @return 选项的总的赞成数量
+     */
+    Integer queryTotalApproveAmount();
+    /**
+     *
+     * @return 选项的总的不赞成数量
+     */
+    Integer queryTotalDisapproveAmount();
+
+    /**
+     *
+     * @return 删除投票选项
+     */
+    int deleteOption(@Param("userId") Long userId, @Param("id") Long id);
+
+    /**
+     *
+     * @return 用户发布的投票
+     */
+    List<VoteOptionDto> publishedVote(@Param("userId") Long userId);
 }

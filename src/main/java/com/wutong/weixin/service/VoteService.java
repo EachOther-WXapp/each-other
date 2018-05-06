@@ -18,7 +18,7 @@ public interface VoteService {
     /**
      * 投票组新增一个选项
      */
-    void addOption(String content, Long voteId, String authHeader);
+    void addOption(String content, String authHeader);
 
     /**
      * 投票选项id加1赞成
@@ -35,4 +35,15 @@ public interface VoteService {
      * @return 列出当前的培训投票选项
      */
     List<VoteOptionDto> list(String authHeader);
+
+    /**
+     * 删除自己的投票选项
+     */
+    void delete(Long voteOptionId, String authHeader);
+
+    /**
+     *
+     * @return 用户发布的投票
+     */
+    List<VoteOptionDto> publishedVote(String authHeader);
 }

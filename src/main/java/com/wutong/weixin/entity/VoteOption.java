@@ -39,11 +39,6 @@ public class VoteOption extends Entity {
     private Long userId;
 
     /**
-     * 投票组id(第一个发起者会自动创建voteId)
-     */
-    private Long voteId;
-
-    /**
      * 投票选项
      */
     private String content;
@@ -57,10 +52,13 @@ public class VoteOption extends Entity {
      * 不赞成数量
      */
     private Integer disapproveAmount;
+    /**
+     * 投票选项的状态
+     */
+    private Integer status;
 
-    public VoteOption(Long userId, Long voteId, String content) {
+    public VoteOption(Long userId, String content) {
         this.userId = userId;
-        this.voteId = voteId;
         this.content = content;
     }
 }

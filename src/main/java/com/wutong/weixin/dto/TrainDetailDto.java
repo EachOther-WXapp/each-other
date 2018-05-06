@@ -46,5 +46,10 @@ public class TrainDetailDto {
     private Integer likeNumber;
     @ApiModelProperty(required = true , value = "图片的id",position = 22)
     private Long imageId;
+    @ApiModelProperty(required = true , value = "是否可以加入培训,true 可以加入培训 false:不可以加入培训",position = 23)
+    private Boolean joinFlag;
+    @ApiModelProperty(required = true , value = "图片的url",position = 25)
+    private String imageUrl;
+
 
 }

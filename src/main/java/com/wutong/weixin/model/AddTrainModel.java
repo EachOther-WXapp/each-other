@@ -51,8 +51,11 @@ public class AddTrainModel {
     private String githubUrl;
 
     @ApiModelProperty(value = "图片base64字符串,字符串不包含data:image/png;base64,",position = 19)
-    @NotNull(message = "{imageBase64.notnull}")
+//    @NotNull(message = "{imageBase64.notnull}")
     private String imageBase64;
+
+    @ApiModelProperty(value = "通过form图片提交到服务器时,服务器返回的id",position = 22)
+    private Long imageId;
 
 
 

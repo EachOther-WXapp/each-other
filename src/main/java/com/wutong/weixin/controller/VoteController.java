@@ -34,30 +34,28 @@ public class VoteController {
     @Autowired
     private VoteService service;
 
-    @ApiOperation( nickname = "new_vote", value = "发起一个投票", notes = "发起一个投票")
-    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
-    @ApiParam(required = true, name = "model", value = "微信登陆code")
-    @GetMapping(value = "new_vote")
-    public ResponseMessage newVote(@RequestParam(value = "content") String content, HttpServletRequest request) {
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        logger.debug("token:{}", authHeader);
-        logger.debug("new_vote 接口参数:{}", content);
-        service.newVote(content, authHeader);
-        return ResponseUtil.ok();
-    }
+//    @ApiOperation( nickname = "new_vote", value = "发起一个投票", notes = "发起一个投票")
+//    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+//    @ApiParam(required = true, name = "model", value = "微信登陆code")
+//    @GetMapping(value = "new_vote")
+//    public ResponseMessage newVote(@RequestParam(value = "content") String content, HttpServletRequest request) {
+//        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        logger.debug("token:{}", authHeader);
+//        logger.debug("new_vote 接口参数:{}", content);
+//        service.newVote(content, authHeader);
+//        return ResponseUtil.ok();
+//    }
 
-    @ApiOperation( nickname = "add_option", value = "培训投票新增一个选项", notes = "培训投票新增一个选项")
+    @ApiOperation( nickname = "add_option", value = "新增培训投票选项", notes = "新增培训投票选项")
     @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
     @ApiParam(required = true, name = "model", value = "微信登陆code")
     @GetMapping(value = "add_option")
     public ResponseMessage addOption(@ApiParam(required = true, name = "content", value = "新增的投票选项")
-                                     @RequestParam(value = "content") String content,
-                                     @ApiParam(required = true, name = "voteId", value = "投票组id")
-                                     @RequestParam(value = "voteId") Long voteId, HttpServletRequest request) {
+                                     @RequestParam(value = "content") String content, HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
-        logger.debug("addOption 接口参数:{},{}", content, voteId);
-        service.addOption(content, voteId, authHeader);
+        logger.debug("addOption 接口参数:{},{}", content);
+        service.addOption(content, authHeader);
         return ResponseUtil.ok();
     }
 
@@ -75,7 +73,7 @@ public class VoteController {
     @ApiParam(required = true, name = "model", value = "微信登陆code")
     @GetMapping(value = "disapprove")
     public ResponseMessage disapprove(@ApiParam(required = true, name = "voteOptionId", value = "投票选项id")
-                                   @RequestParam(value = "voteOptionId") Long voteOptionId) {
+                                      @RequestParam(value = "voteOptionId") Long voteOptionId) {
         logger.debug("disapprove 接口参数:{}", voteOptionId);
         service.disapprove(voteOptionId);
         return ResponseUtil.ok();
@@ -87,8 +85,31 @@ public class VoteController {
     public ResponseMessage<List<VoteOptionDto>> list(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("list:{}", authHeader);
-        return ResponseUtil.ok(service.list(authHeader));
+        List<VoteOptionDto> list = service.list(authHeader);
+        logger.debug("/vote/list 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
+    @ApiOperation( nickname = "delete", value = "删除自己的投票选项", notes = "删除自己的投票选项")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @GetMapping(value = "delete")
+    public ResponseMessage delete(@ApiParam(required = true, name = "voteOptionId", value = "投票选项id")
+                                  @RequestParam(value = "voteOptionId") Long voteOptionId, HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("delete:{},{}", voteOptionId, authHeader);
+        service.delete(voteOptionId, authHeader);
+        return ResponseUtil.ok();
+    }
+
+    @ApiOperation( nickname = "published_vote", value = "用户发布的投票", notes = "用户发布的投票")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @GetMapping(value = "published_vote")
+    public ResponseMessage<List<VoteOptionDto>> publishedVote(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("list:{}", authHeader);
+        List<VoteOptionDto> list = service.publishedVote(authHeader);
+        logger.debug("/vote/publishedVote 接口返回:{}", list);
+        return ResponseUtil.ok(list);
+    }
 
 }

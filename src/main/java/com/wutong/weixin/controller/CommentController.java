@@ -68,7 +68,9 @@ public class CommentController {
     public ResponseMessage<List<TrainCommentDto>> commentList(@ApiParam(required = true, value = "培训的id")
                                        @RequestParam(value = "trainId") Long trainId) {
         logger.info("commentList 接口参数:{}", trainId);
-        return ResponseUtil.ok(service.commentList(trainId));
+        List<TrainCommentDto> list = service.commentList(trainId);
+        logger.debug("list 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
 

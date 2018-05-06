@@ -57,4 +57,15 @@ public interface TrainService {
      * @return 公司历史的培训
      */
     List<TodayTrainInfoDto> historyTrain(String authHeader);
+
+    /**
+     * 删除自己发起的培训
+     */
+    void delete(Long trainId, String authHeader);
+
+    /**
+     *
+     * @return 用户自己发布的培训
+     */
+    List<TodayTrainInfoDto> publishedTrain(String authHeader);
 }

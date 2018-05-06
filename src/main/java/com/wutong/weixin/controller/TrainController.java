@@ -42,7 +42,9 @@ public class TrainController {
     public ResponseMessage<List<TodayTrainInfoDto>> todayList(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
-        return ResponseUtil.ok(service.todayList(authHeader));
+        List<TodayTrainInfoDto> list = service.todayList(authHeader);
+        logger.debug("today_list 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
     @ApiOperation( nickname = "add", value = "发起培训", notes = "发起培训")
@@ -84,7 +86,9 @@ public class TrainController {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
         logger.info("joinTrain 接口参数:{}", trainId);
-        return ResponseUtil.ok(service.detail(trainId, authHeader));
+        TrainDetailDto result = service.detail(trainId, authHeader);
+        logger.debug("joinTrain 接口返回结果:{}", result);
+        return ResponseUtil.ok(result);
     }
 
     @ApiOperation( nickname = "month_list", value = "最近一个月以后的培训", notes = "最近一个月以后的培训")
@@ -93,7 +97,9 @@ public class TrainController {
     public ResponseMessage<List<TodayTrainInfoDto>> monthList(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
-        return ResponseUtil.ok(service.monthList(authHeader));
+        List<TodayTrainInfoDto> list = service.monthList(authHeader);
+        logger.debug("month_list 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
     @ApiOperation( nickname = "joined_train", value = "用户参加过的培训", notes = "用户参加过的培训")
@@ -102,7 +108,9 @@ public class TrainController {
     public ResponseMessage<List<TodayTrainInfoDto>> joinedTrain(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
-        return ResponseUtil.ok(service.joinedTrain(authHeader));
+        List<TodayTrainInfoDto> list = service.joinedTrain(authHeader);
+        logger.debug("joined_train 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
     @ApiOperation( nickname = "history_train", value = "公司历史的培训", notes = "公司历史的培训")
@@ -111,7 +119,30 @@ public class TrainController {
     public ResponseMessage<List<TodayTrainInfoDto>> historyTrain(HttpServletRequest request) {
         String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         logger.debug("token:{}", authHeader);
-        return ResponseUtil.ok(service.historyTrain(authHeader));
+        List<TodayTrainInfoDto> list = service.historyTrain(authHeader);
+        logger.debug("history_train 接口返回:{}", list);
+        return ResponseUtil.ok(list);
+    }
+
+    @ApiOperation( nickname = "delete", value = "删除自己发起的培训", notes = "删除自己发起的培训")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @GetMapping(value = "delete")
+    public ResponseMessage delete(@ApiParam(required = true, name = "trainId", value = "培训的id")
+                                  @RequestParam(value = "trainId") Long trainId, HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("delete:{},{}", trainId, authHeader);
+        service.delete(trainId, authHeader);
+        return ResponseUtil.ok();
+    }
+    @ApiOperation( nickname = "published_train", value = "用户自己发布的培训", notes = "用户自己发布的培训")
+    @ApiImplicitParam(paramType = "header", name = HttpHeaders.AUTHORIZATION, value = "token信息", required = true, defaultValue = "Bearer ")
+    @PostMapping(value = "published_train")
+    public ResponseMessage<List<TodayTrainInfoDto>> publishedTrain(HttpServletRequest request) {
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        logger.debug("token:{}", authHeader);
+        List<TodayTrainInfoDto> list = service.publishedTrain(authHeader);
+        logger.debug("publishedTrain 接口返回:{}", list);
+        return ResponseUtil.ok(list);
     }
 
 

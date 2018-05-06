@@ -85,12 +85,12 @@ CREATE TABLE IF NOT EXISTS `vote_option`(
   `create_time`         datetime DEFAULT CURRENT_TIMESTAMP() COMMENT '创建时间',
   `modified_time`       datetime DEFAULT null ON UPDATE CURRENT_TIMESTAMP() COMMENT '更新时间',
   `user_id`             BIGINT NOT NULL COMMENT '投票选项发起者id',
-  `vote_id`             BIGINT NOT NULL COMMENT '投票组id(第一个发起者会自动创建voteId)',
   `content`             VARCHAR(32) not null COMMENT '投票选项',
   `approve_amount`      int DEFAULT 0 COMMENT '赞成数量',
   `disapprove_amount`   int DEFAULT 0 COMMENT '不赞成数量',
+  `status`              TINYINT DEFAULT 0 COMMENT '此投票状态 0:正在投票 1:已结束投票',
   PRIMARY KEY (`id`)
-)ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训投票选项表(一组投票最多5个)';
+)ENGINE = InnoDB AUTO_INCREMENT = 1 DEFAULT CHARSET = utf8mb4 COMMENT '培训投票选项表(一组投票最多8个)';
 
 
 CREATE TABLE IF NOT EXISTS `file`

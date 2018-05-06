@@ -6,7 +6,9 @@ import com.wutong.weixin.service.FileService;
 import com.wutong.weixin.utils.application.RequestHolder;
 import com.wutong.weixin.utils.date.CalendarUtil;
 import com.wutong.weixin.utils.date.DateFormatUtil;
+import com.wutong.weixin.utils.encrypt.Base64Util;
 import com.wutong.weixin.utils.encrypt.HashUtil;
+import com.wutong.weixin.utils.enums.FileSaveType;
 import com.wutong.weixin.utils.enums.FileType;
 import com.wutong.weixin.utils.exception.BusinessException;
 import com.wutong.weixin.utils.exception.StatusCodeEnum;
@@ -21,14 +23,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import sun.misc.BASE64Encoder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Author：Tom
@@ -257,7 +260,37 @@ public class FileServiceImpl implements FileService {
         }
         return file.getId();
     }
-
+    /**
+     *
+     * @return 上传图片
+     */
+    @Override
+    public Long imageForm(MultipartFile file) {
+        if (!file.isEmpty()) {
+            try {
+                InputStream in = file.getInputStream();
+                byte[] bytes = new byte[in.available()];
+                int length = in.read(bytes);
+                logger.debug("文件长度:{}", length);
+                String base64Str = new BASE64Encoder().encode(bytes);
+                Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+                Matcher m = p.matcher(base64Str);
+                String newBaseStr = m.replaceAll("");
+//                base64Str = base64Str.replaceAll("\\r\\n","");
+//                byte[] image = file.getBytes();
+//                String base64Str = Base64Util.encrypt(new String(image, "UTF-8"));
+                logger.debug("图片转成base64字符串:{}", newBaseStr);
+                Long id = fileUpload(FileType.IMAGE, newBaseStr, "jpg", FileSaveType.TRAIN.getCode());
+                logger.debug("图片保存的id为:{}", id);
+                return id;
+            } catch (IOException e) {
+                logger.debug("图片上传失败");
+                throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
+            }
+        }
+        logger.warn("上传图片为空");
+        throw new BusinessException(StatusCodeEnum.IMAGE_IS_EMPTY);
+    }
 
 
 }

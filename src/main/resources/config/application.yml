@@ -68,3 +68,4 @@ file:
   fileDir: /files # 文件目录
   imageSuffix: jpeg,jpg,gif,png,ico,bmp  # 允许的图片后缀
   imageDir: /images #图片目录
+  imageUrl: https://www.xiciwutong.xin/each-other/file/images/

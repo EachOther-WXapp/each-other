@@ -43,45 +43,46 @@ public class VoteServiceImpl implements VoteService {
 //    @Transactional
     @Override
     public void newVote(String content, String authHeader) {
-        User user = userService.verifyToken(authHeader);
-        int count = voteDao.queryVoteCount();
-        if (count >= 1) {
-            logger.warn("已有一个投票,不能添加新的投票");
-            throw new BusinessException(StatusCodeEnum.VOTE_ONLY_ONE);
-        }
-        Vote vote = new Vote(0);
-        int result = voteDao.insert(vote);
-        if (result != 1) {
-            logger.error("插入vote表出错:{}", vote);
-            throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
-        }
-        VoteOption voteOption = new VoteOption(user.getId(), vote.getId(), content);
-        result = voteOptionDao.insert(voteOption);
-        if (result != 1) {
-            logger.error("插入vote表出错:{}", vote);
-            throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
-        }
+//        User user = userService.verifyToken(authHeader);
+//        int count = voteDao.queryVoteCount();
+//        if (count >= 1) {
+//            logger.warn("已有一个投票,不能添加新的投票");
+//            throw new BusinessException(StatusCodeEnum.VOTE_ONLY_ONE);
+//        }
+//        Vote vote = new Vote(0);
+//        int result = voteDao.insert(vote);
+//        if (result != 1) {
+//            logger.error("插入vote表出错:{}", vote);
+//            throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
+//        }
+//        VoteOption voteOption = new VoteOption(user.getId(), vote.getId(), content);
+//        result = voteOptionDao.insert(voteOption);
+//        if (result != 1) {
+//            logger.error("插入vote表出错:{}", vote);
+//            throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
+//        }
 
     }
     /**
      * 投票组新增一个选项
      */
     @Override
-    public void addOption(String content, Long voteId, String authHeader) {
+    public void addOption(String content, String authHeader) {
         User user = userService.verifyToken(authHeader);
-        Vote vote = voteDao.queryByPk(voteId);
-        if (vote == null) {
-            logger.error("非法的voteId:{}", voteId);
-            throw new BusinessException(StatusCodeEnum.VOTE_ID_INVALID);
-        }
-        int count = voteOptionDao.queryVoteCount(voteId);
+//        Vote vote = voteDao.queryByPk(voteId);
+//        if (vote == null) {
+//            logger.error("非法的voteId:{}", voteId);
+//            throw new BusinessException(StatusCodeEnum.VOTE_ID_INVALID);
+//        }
+
+        int count = voteOptionDao.queryVoteCount();
         if (count >= 8) {
             logger.warn("一个投票组的选项不能超过8个:{}", count);
             throw new BusinessException(StatusCodeEnum.VOTE_ID_COUNT_MORE);
         }
-        int result = voteOptionDao.insert(new VoteOption(user.getId(), voteId, content));
+        int result = voteOptionDao.insert(new VoteOption(user.getId(), content));
         if (result != 1) {
-            logger.error("插入vote表出错:{}", vote);
+            logger.error("插入vote表出错:{}", content);
             throw new BusinessException(StatusCodeEnum.SERVER_ERROR);
         }
     }
@@ -126,10 +127,33 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public List<VoteOptionDto> list(String authHeader) {
         userService.verifyToken(authHeader);
-        Vote vote = voteDao.queryPresentVote();
-        if (vote == null) {
-            return new ArrayList<>();
+        Integer totalApproveAmount = voteOptionDao.queryTotalApproveAmount();
+        Integer totalDisapproveAmount = voteOptionDao.queryTotalDisapproveAmount();
+        List<VoteOptionDto> list = voteOptionDao.queryVoteOption();
+        for (VoteOptionDto dto : list) {
+            dto.setTotalApproveAmount(totalApproveAmount);
+            dto.setTotalDisapproveAmount(totalDisapproveAmount);
         }
-        return voteOptionDao.queryVoteOption(vote.getId());
+        return list;
+    }
+
+    @Override
+    public void delete(Long voteOptionId, String authHeader) {
+        User user = userService.verifyToken(authHeader);
+        int result = voteOptionDao.deleteOption(user.getId(), voteOptionId);
+        if (result != 1) {
+            logger.error("非法的选项id:{}", voteOptionId);
+            throw new BusinessException(StatusCodeEnum.VOTE_OPTION_ID_INVALID);
+        }
+    }
+
+    /**
+     *
+     * @return 用户发布的投票
+     */
+    @Override
+    public List<VoteOptionDto> publishedVote(String authHeader) {
+        User user = userService.verifyToken(authHeader);
+        return voteOptionDao.publishedVote(user.getId());
     }
 }

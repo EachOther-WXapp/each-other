@@ -6,13 +6,19 @@ import com.wutong.weixin.utils.response.ResponseUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * Author：Tom
@@ -36,6 +42,14 @@ public class FileController {
         fileService.imageShow(id);
         return ResponseUtil.ok();
     }
+    @ApiOperation(nickname = "image_form", value = "图片以form的形式上传", notes = "图片以form的形式上传")
+    @PostMapping(value = "/image_form", consumes = "multipart/form-data;charset=UTF-8")
+    public ResponseMessage<Long> imageForm(@RequestParam("file") MultipartFile file) {
+        logger.info("image_form() 接口");
+        Long imageId = fileService.imageForm(file);
+        logger.debug("image_form 接口返回:{}", imageId);
+        return ResponseUtil.ok(imageId);
 
+    }
 
 }
